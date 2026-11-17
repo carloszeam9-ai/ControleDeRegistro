@@ -1,0 +1,18 @@
+TOTEM ESCOLAR - YOLO Face + OpenCV.js + JavaScript
+
+1. Abra a pasta no VS Code e use Live Server. Acesse localhost no Chrome/Edge.
+2. Internet é necessária para baixar OpenCV.js e ONNX Runtime Web via CDN.
+3. Clique Iniciar câmera e permita acesso à webcam USB.
+4. Capture uma imagem ou escolha uma foto de teste autorizada.
+5. Selecione seu modelo .onnx YOLOv8 Face DETECTOR de 1 classe, entrada [1,3,H,W], saída bruta [1,5,N] ou [1,N,5].
+6. Clique Carregar modelo e depois Detectar rostos.
+7. Conecte o Arduino Mega 2560 via USB e selecione COM7 (ou a porta atual).
+8. Feche o Monitor Serial da IDE antes de conectar pelo navegador.
+
+IMPORTANTE:
+- O arquivo ONNX não está incluído. YOLOv8n-face de repositórios diferentes pode usar saídas diferentes (ex.: landmarks), que este decodificador NÃO suporta sem adaptação.
+- O pré-processamento usa OpenCV.js (letterbox) e a inferência usa ONNX Runtime Web.
+- Este projeto NÃO compara identidades, NÃO registra presença e NÃO envia FACE_OK.
+- O Arduino poderá indicar tempo esgotado após leitura NFC, pois a validação facial ainda não está implementada.
+- Fotos ficam apenas na memória da página e são apagadas ao recarregar.
+- Use imagens autorizadas e não use a detecção facial como prova de identidade de alunos.

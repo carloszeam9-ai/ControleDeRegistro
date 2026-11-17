@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Totem Escolar — YOLO + OpenCV.js</title>
+    <style>
+        body {
+            margin: 0;
+            background: #101827;
+            color: #f3f6ff;
+            font: 16px system-ui
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 24px
+        }
+
+        section {
+            background: #202c41;
+            border-radius: 14px;
+            padding: 18px;
+            margin: 16px 0
+        }
+
+        button,
+        input,
+        select {
+            padding: 10px;
+            margin: 6px 3px;
+            border-radius: 8px
+        }
+
+        button {
+            border: 0;
+            background: #58c8f7;
+            color: #082337;
+            font-weight: bold;
+            cursor: pointer
+        }
+
+        button:disabled {
+            opacity: .5
+        }
+
+        video,
+        canvas {
+            max-width: 100%;
+            border-radius: 10px;
+            background: #000
+        }
+
+        video {
+            width: 600px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px
+        }
+
+        .warn {
+            background: #423a2a;
+            border-left: 4px solid #ffc46a;
+            padding: 12px
+        }
+
+        pre {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            background: #101827;
+            padding: 12px;
+            max-height: 190px;
+            overflow: auto
+        }
+
+        .muted {
+            color: #c6d0e1
+        }
+
+        #result {
+            font-weight: bold
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Totem Escolar — JavaScript</h1>
+        <p>Webcam USB + OpenCV.js + YOLO Face (ONNX) + Arduino Mega 2560</p>
+        <p class="warn">Protótipo: detecta rostos, mas <b>não identifica alunos</b> nem autoriza presença. Nenhum
+            comando FACE_OK é enviado ao Arduino.</p>
+        <section>
+            <h2>1. Webcam USB</h2><button id="start">Iniciar câmera</button><button id="stop">Parar câmera</button>
+            <p id="cameraStatus">Câmera desligada.</p><video id="video" autoplay playsinline muted></video>
+        </section>
+        <section>
+            <h2>2. Imagem para análise</h2><select id="aluno">
+                <option value="9E49D706">Aluno 1 — 9E49D706</option>
+                <option value="EE0A8906">Aluno 2 — EE0A8906</option>
+            </select><button id="capture">Capturar da webcam</button><input type="file" id="photo"
+                accept="image/*"><button id="clear">Limpar fotos temporárias</button>
+            <p id="cadastros">Nenhuma foto de teste.</p>
+            <div class="grid">
+                <div>
+                    <h3>Imagem original</h3><canvas id="snapshot" width="640" height="480"></canvas>
+                </div>
+                <div>
+                    <h3>Detecção YOLO</h3><canvas id="detections" width="640" height="480"></canvas>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>3. YOLO Face + OpenCV.js</h2>
+            <p class="muted">Selecione um modelo ONNX YOLOv8 de detecção facial com saída bruta [1,5,N] ou [1,N,5], 1
+                classe, sem NMS embutido. Outros formatos podem exigir adaptação.</p><input type="file" id="model"
+                accept=".onnx"><button id="loadModel">Carregar modelo</button><button id="detect">Detectar
+                rostos</button>
+            <p id="libraryStatus">Carregando bibliotecas...</p>
+            <p id="modelStatus">Modelo não carregado.</p>
+            <p id="result">Aguardando análise.</p>
+            <pre id="modelLog"></pre>
+        </section>
+        <section>
+            <h2>4. Arduino NFC</h2><button id="connect">Conectar Arduino (selecionar COM7)</button><button
+                id="disconnect">Desconectar</button>
+            <p id="serialStatus">Desconectado</p>
+            <p id="uid">Aguardando cartão.</p>
+            <pre id="serialLog"></pre>
+        </section>
+    </main>
+   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+<script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+<script src="yolo.js"></script>
+<script src="app.js"></script>
+</body>
+
+</html>
